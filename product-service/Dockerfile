@@ -1,15 +1,13 @@
-# Use the official Java 17 image (Matches your local setup)
-FROM eclipse-temurin:17-jdk
-
-# Set working directory inside the container
+# Stage 1: Build
+FROM maven:3.9-eclipse-temurin-17 AS build
 WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
 
-# Copy the built JAR file into the container
-# This assumes you ran 'mvn package' locally first
-COPY target/*.jar app.jar
-
-# Expose port 8080 (Just for documentation, we map ports in docker-compose)
+# Stage 2: Run
+FROM eclipse-temurin:17-jdk
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
-
-# Command to run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
