@@ -74,7 +74,7 @@ That's it! No need to install Java, Maven, or MySQL locally.
 ### 1. Clone the repository
 ```bash
 git clone https://github.com/yourusername/microservices-ecommerce.git
-cd microservices-ecommerce
+cd springboot-microservice-with-docker
 ```
 
 ### 2. Start all services
