@@ -4,6 +4,7 @@ import com.telusko.orderservice.dao.OrderRepo;
 import com.telusko.orderservice.dto.ProductDTO;
 import com.telusko.orderservice.feign.ProductInterface;
 import com.telusko.orderservice.model.Orders;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ public class OrderService {
     @Autowired
     ProductInterface productInterface;
 
+    @CircuitBreaker(name = "inventory", fallbackMethod = "inventoryFallback")
     public String placeOrder(Integer productId, Integer quantity) {
         // 1. Get Product Details
         ProductDTO product = productInterface.getProductById(productId).getBody();
@@ -43,5 +45,10 @@ public class OrderService {
         } else {
             return "Product not found or Out of Stock";
         }
+    }
+
+    public String inventoryFallback(Integer productId, Integer quantity, Throwable t) {
+        System.out.println("Fallback Triggered! Reason: " + t.getMessage());
+        return "Oops! Order failed. The inventory system is currently down. Please try again later.";
     }
 }
