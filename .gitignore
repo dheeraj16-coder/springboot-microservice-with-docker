@@ -1,0 +1,33 @@
+
+.DS_Store
+**/.DS_Store
+
+# --- Maven (Crucial: Don't push built jars) ---
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/resources/**/target/
+*.jar
+*.war
+
+# --- IntelliJ IDEA ---
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# --- Eclipse ---
+.classpath
+.project
+.settings/
+
+# --- VS Code ---
+.vscode/
+
+# --- Logs ---
+*.log
+logs/
+
+# --- OS Generated ---
+Thumbs.db
+ehthumbs.db
